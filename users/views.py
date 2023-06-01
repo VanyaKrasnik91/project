@@ -19,11 +19,14 @@ class Register(View):
         form = UserCreationForm(request.POST)
 
         if form.is_valid():
+            print(request.POST)
             form.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
+            user.set_password(user.password)
             login(request, user)
+
             return redirect('home')
         context = {
             'form' : form
